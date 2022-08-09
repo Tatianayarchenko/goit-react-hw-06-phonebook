@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { Input } from '../ui/Input.styled';
 import { useSelector } from 'react-redux';
+import { getFilterValue } from 'store/slice';
 
 export const Filter = ({ onChange }) => {
-  const filter = useSelector(state => state.filter);
+  const filter = useSelector(getFilterValue);
 
   return (
     <label>
@@ -13,14 +14,6 @@ export const Filter = ({ onChange }) => {
   );
 };
 
-// export const Filter = ({ value, onChange }) =>  (
-//     <label>
-//       Find contacts by name
-//       <Input type="text" value={value} onChange={onChange} />
-//     </label>
-//   );
-
 Filter.propTypes = {
-  // value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
