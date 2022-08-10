@@ -1,12 +1,17 @@
-import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 import { Button } from '../ui/Button.styled';
 import { InputForm } from '../ui/Input.styled';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as yap from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts, getContsctsValue } from 'store/slice';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(getContsctsValue);
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, { resetForm }) => {
-    onSubmit(values);
+    formSubmitHendler(values);
     resetForm();
   };
 
@@ -14,6 +19,18 @@ export const ContactForm = ({ onSubmit }) => {
     name: yap.string().required('Please, enter your name.'),
     number: yap.number().positive().required('Please, enter your number.'),
   });
+
+  const formSubmitHendler = ({ name, number }) => {
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    const normalizedName = contact.name.toLowerCase();
+    contacts.find(contact => contact.name.toLowerCase() === normalizedName)
+      ? alert(`${name} is already in contacts`)
+      : dispatch(addContacts({ id: nanoid(), name, number }));
+  };
 
   return (
     <Formik
@@ -39,8 +56,4 @@ export const ContactForm = ({ onSubmit }) => {
       </Form>
     </Formik>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

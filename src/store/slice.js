@@ -14,7 +14,7 @@ const initialState = {
   filter: '',
 };
 
-const myContactSlice = createSlice({
+const contacts = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
@@ -40,13 +40,9 @@ const persistConfig = {
   storage,
 };
 
-export const contactsReducer = persistReducer(
-  persistConfig,
-  myContactSlice.reducer
-);
+export default persistReducer(persistConfig, contacts.reducer);
 
-export const { addContacts, removeContacts, filterContacts } =
-  myContactSlice.actions;
+export const { addContacts, removeContacts, filterContacts } = contacts.actions;
 
 // Selectors
 
